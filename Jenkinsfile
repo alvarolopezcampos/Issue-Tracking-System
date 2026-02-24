@@ -1,9 +1,21 @@
 pipeline {
     agent any
+    tools {
+        nodejs 'node'
+    }
     stages {
         stage('Compile') {
             steps {
-                echo 'Iniciando la compilación del proyecto...'
+                echo 'Iniciando la compilación del Back-End...'
+                dir('Back-End') {
+                    sh 'mvn clean package'
+                }
+                
+                echo 'Iniciando la compilación del Front-End...'
+                dir('Front-End') {
+                    sh 'npm install'
+                    sh 'npm run build'
+                }
             }
         }
         stage('SonarQube Analysis') {
