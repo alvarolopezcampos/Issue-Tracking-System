@@ -3,7 +3,6 @@ pipeline {
     environment {
         NODE_OPTIONS = '--openssl-legacy-provider'
     }
-    
     tools {
         nodejs 'node'
         maven 'maven'
