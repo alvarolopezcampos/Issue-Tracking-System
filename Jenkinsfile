@@ -18,7 +18,7 @@ pipeline {
                 echo 'Iniciando la compilación del Front-End...'
                 dir('Front-End') {
                     sh 'npm install'
-                    sh 'npm run build'
+                    sh 'npm run build -- --source-map=false'
                 }
             }
         }
