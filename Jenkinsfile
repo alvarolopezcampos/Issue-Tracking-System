@@ -1,8 +1,10 @@
 pipeline {
     agent any
     environment {
-        NODE_OPTIONS = '--openssl-legacy-provider'
-    }
+    NODE_OPTIONS = '--openssl-legacy-provider'
+    SCANNER_HOME = tool 'sonar-scanner' 
+}
+
     tools {
         nodejs 'node'
         maven 'maven'
@@ -23,10 +25,21 @@ pipeline {
             }
         }
         stage('SonarQube Analysis') {
-            steps {
-                echo 'Analizando código con SonarQube...'
+    steps {
+        withSonarQubeEnv('sonar') {
+            
+            echo 'Analizando el código Java (Back-End)...'
+            dir('Back-End') {
+                sh 'mvn sonar:sonar -Dsonar.projectKey=ITS-Backend -Dsonar.projectName="ITS Back-End"'
+            }
+            
+            echo 'Analizando el código web (Front-End)...'
+            dir('Front-End') {
+                sh "${SCANNER_HOME}/bin/sonar-scanner -Dsonar.projectKey=ITS-Frontend -Dsonar.projectName=\"ITS Front-End\""
             }
         }
+    }
+}
         stage('Nexus Upload') {
             steps {
                 echo 'Subiendo archivo .jar a Nexus...'
