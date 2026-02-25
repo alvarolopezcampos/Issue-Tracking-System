@@ -51,16 +51,12 @@ pipeline {
                 echo 'Subiendo archivo .jar a Nexus...'
                 withCredentials([usernamePassword(credentialsId: 'nexus-credentials', passwordVariable: 'NEXUS_PASS', usernameVariable: 'NEXUS_USER')]) {
                     dir('Back-End') {
-                        sh '''
-                            # Buscamos el archivo generado en la carpeta target
-                            JAR_PATH=$(find target -name "*.jar" | head -n 1)
-                            
+                        sh '''                            
+                            JAR_PATH=$(find target -name "*.jar" | head -n 1)               
                             echo "Archivo detectado: $JAR_PATH"
-
-                            # Subida mediante CURL al repositorio que creamos
                             curl -v -u "$NEXUS_USER:$NEXUS_PASS" \
                             --upload-file "$JAR_PATH" \
-                            "http://localhost:8081/repository/maven-snapshots/com/ismail/issuetracking/0.0.1-SNAPSHOT/issuetracking-0.0.1-SNAPSHOT.jar"
+                            "http://nexus:8081/repository/maven-snapshots/com/ismail/issuetracking/0.0.1-SNAPSHOT/issuetracking-0.0.1-SNAPSHOT.jar"
                         '''
                     }
                 }
