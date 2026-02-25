@@ -48,18 +48,22 @@ pipeline {
     }
         stage('Nexus Upload') {
             steps {
-                echo 'Subiendo archivo .jar a la caja fuerte de Nexus...'
-                
-                withCredentials([usernamePassword(credentialsId: 'nexus-credential', passwordVariable: 'NEXUS_PASS', usernameVariable: 'NEXUS_USER')]) {
-                    dir('Back-End') {
-                        sh '''
-                            JAR_FILE=$(find target -name "*.jar" | head -n 1)
-                            curl -v -u "${NEXUS_USER}:${NEXUS_PASS}" --upload-file "${JAR_FILE}" http://localhost:8081/repository/its-releases/com/its/backend/1.0.0/backend-1.0.0.jar
-                        '''
-                    }
-                }
+                echo 'Subiendo archivo .jar a Nexus...'
+                nexusArtifactUploader(
+                    nexusVersion: 'nexus3',
+                    protocol: 'http',
+                    nexusUrl: 'nexus:8081',
+                    groupId: 'com.ismail',
+                    version: '0.0.1-SNAPSHOT',
+                    repository: 'maven-snapshots',
+                    credentialsId: 'nexus-credential',
+                    artifacts: [
+                        [artifactId: 'issuetracking', file: 'target/issuetracking-0.0.1-SNAPSHOT.jar', type: 'jar']
+                    ]
+                )
             }
         }
+}
         stage('Docker Build') {
             steps {
                 echo 'Creando imagen de Docker...'
