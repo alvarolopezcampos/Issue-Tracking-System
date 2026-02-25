@@ -46,25 +46,7 @@ pipeline {
         }
         }
     }
-        stage('Nexus Upload') {
-    steps {
-        echo 'Subiendo archivo .jar a Nexus...'
-        nexusArtifactUploader(
-            nexusVersion: 'nexus3',
-            protocol: 'http',
-            nexusUrl: 'localhost:8081', 
-            groupId: 'com.ismail',
-            version: '0.0.1-SNAPSHOT',
-            repository: 'maven-snapshots',
-            credentialsId: 'nexus-credentials', 
-            artifacts: [
-                [artifactId: 'issuetracking', 
-                 file: 'Back-End/target/issuetracking-0.0.1-SNAPSHOT.jar', 
-                 type: 'jar']
-            ]
-        )
-    }
-}
+    
 
         stage('Docker Build') {
             steps {
