@@ -48,7 +48,16 @@ pipeline {
     }
         stage('Nexus Upload') {
             steps {
-                echo 'Subiendo archivo .jar a Nexus...'
+                echo 'Subiendo archivo .jar a la caja fuerte de Nexus...'
+                
+                withCredentials([usernamePassword(credentialsId: 'nexus-credentials', passwordVariable: 'NEXUS_PASS', usernameVariable: 'NEXUS_USER')]) {
+                    dir('Back-End') {
+                        sh '''
+                            JAR_FILE=$(find target -name "*.jar" | head -n 1)
+                            curl -v -u "${NEXUS_USER}:${NEXUS_PASS}" --upload-file "${JAR_FILE}" http://localhost:8081/repository/its-releases/com/its/backend/1.0.0/backend-1.0.0.jar
+                        '''
+                    }
+                }
             }
         }
         stage('Docker Build') {
