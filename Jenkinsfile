@@ -9,7 +9,7 @@ pipeline {
         maven 'maven'
     }
     stages {
-        stage('C') {
+        stage('Compile') {
             steps {
                 echo 'Iniciando la compilación del Back-End...'
                 dir('Back-End') {
