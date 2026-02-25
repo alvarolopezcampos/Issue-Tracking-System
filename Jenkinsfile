@@ -63,7 +63,7 @@ pipeline {
                 )
             }
         }
-}
+
         stage('Docker Build') {
             steps {
                 echo 'Creando imagen de Docker...'
