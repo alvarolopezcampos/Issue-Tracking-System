@@ -11,7 +11,7 @@ pipeline {
     stages {
         stage('Compile') {
             steps {
-                echo 'Iniciando la compilación del Back-End...'
+                echo 'Iiciando la compilación del Back-End...'
                 dir('Back-End') {
                     sh 'mvn clean package'
                 }
