@@ -50,7 +50,7 @@ pipeline {
             steps {
                 echo 'Subiendo archivo .jar a la caja fuerte de Nexus...'
                 
-                withCredentials([usernamePassword(credentialsId: 'nexus-credentials', passwordVariable: 'NEXUS_PASS', usernameVariable: 'NEXUS_USER')]) {
+                withCredentials([usernamePassword(credentialsId: 'nexus-credential', passwordVariable: 'NEXUS_PASS', usernameVariable: 'NEXUS_USER')]) {
                     dir('Back-End') {
                         sh '''
                             JAR_FILE=$(find target -name "*.jar" | head -n 1)
