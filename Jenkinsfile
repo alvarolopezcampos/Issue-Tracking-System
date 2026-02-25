@@ -1,7 +1,6 @@
 pipeline {
     agent any
     environment {
-    NODE_OPTIONS = '--openssl-legacy-provider'
     SCANNER_HOME = tool 'sonar-scanner' 
 }
 
