@@ -5,7 +5,7 @@ pipeline {
 }
 
     tools {
-        nodejs 'node'
+        nodejs 'node16'
         maven 'maven'
     }
     stages {
