@@ -46,11 +46,26 @@ pipeline {
         }
         }
     }
-    stage('Subida a Nexus') {
+    stage('Nexus Upload') {
             steps {
-                echo 'Subiendo archivo .jar a Nexus...'
+                echo 'Subiendo archivo .jar a Nexus mediante el plugin...'
+                nexusArtifactUploader(
+                    nexusVersion: 'nexus3',
+                    protocol: 'http',
+                    nexusUrl: 'nexus:8081',
+                    groupId: 'com.ismail.issuetracking',
+                    version: '0.0.1-SNAPSHOT',
+                    repository: 'maven-snapshots',
+                    credentialsId: 'nexus-credentials',
+                    artifacts: [
+                        [artifactId: 'issuetracking',
+                         classifier: '',
+                         file: 'Back-End/target/issuetracking-0.0.1-SNAPSHOT.jar',
+                         type: 'jar']
+                    ]
+                )
             }
-    }
+        }
 
         stage('Docker Build') {
             steps {
