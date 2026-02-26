@@ -9,7 +9,7 @@ pipeline {
         maven 'maven'
     }
     stages {
-        stage('Compile') {
+        stage('Compilación') {
             steps {
                 echo 'Iniciando la compilación del Back-End...'
                 dir('Back-End') {
@@ -23,7 +23,7 @@ pipeline {
                 }
             }
         }
-        stage('SonarQube Analysis') {
+        stage('Análisis con SonarQube') {
     steps {
         withSonarQubeEnv('sonar') {
             
@@ -46,22 +46,11 @@ pipeline {
         }
         }
     }
-    stage('Nexus Upload') {
+    stage('Subida a Nexus') {
             steps {
                 echo 'Subiendo archivo .jar a Nexus...'
-                withCredentials([usernamePassword(credentialsId: 'nexus-credentials', passwordVariable: 'NEXUS_PASS', usernameVariable: 'NEXUS_USER')]) {
-                    dir('Back-End') {
-                        sh '''                            
-                            JAR_PATH=$(find target -name "*.jar" | head -n 1)               
-                            echo "Archivo detectado: $JAR_PATH"
-                            curl -v -u "$NEXUS_USER:$NEXUS_PASS" \
-                            --upload-file "$JAR_PATH" \
-                            "http://nexus:8081/repository/maven-snapshots/com/ismail/issuetracking/0.0.1-SNAPSHOT/issuetracking-0.0.1-SNAPSHOT.jar"
-                        '''
-                    }
-                }
             }
-        }
+    }
 
         stage('Docker Build') {
             steps {
