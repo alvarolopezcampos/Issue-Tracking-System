@@ -67,11 +67,13 @@ pipeline {
             }
         }
 
-        stage('Docker Build') {
-            steps {
-                echo 'Creando imagen de Docker...'
-            }
+        stage('Build Docker Image') {
+    steps {
+        dir('Back-End') {
+            sh 'docker build -t app-backend:latest .'
         }
+    }
+}
         stage('Deploy') {
             steps {
                 echo 'Desplegando la aplicación...'
