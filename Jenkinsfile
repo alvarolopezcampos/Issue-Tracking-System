@@ -5,6 +5,7 @@ pipeline {
 }
 
     tools {
+     
         nodejs 'node16'
         maven 'maven'
     }
