@@ -5,7 +5,6 @@ pipeline {
 }
 
     tools {
-     
         nodejs 'node16'
         maven 'maven'
     }
@@ -70,11 +69,9 @@ pipeline {
 
         stage('Build Docker Image') {
     steps {
-        dir('Back-End') {
-            sh 'docker build -t app-backend:latest .'
+        echo {'Creando la imagen para docker...'
         }
     }
-}
         stage('Deploy') {
             steps {
                 echo 'Desplegando la aplicación...'
